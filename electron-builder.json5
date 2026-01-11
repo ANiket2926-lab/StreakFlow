@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.habittracker.app",
+  "asar": true,
+  "productName": "HabitTracker",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist",
+    "dist-electron"
+    // sql.js might need "node_modules/sql.js" if not bundled? 
+    // Vite bundles dependencies usually. But sql.js wasm file?
+  ],
+  // sql.js needs wasm file to be copied.
+  // I need to confirm if 'vite' handles copying wasm or if I need 'extraResources'.
+  // Usually vite-plugin-electron handles static assets in public/
+  "extraResources": [
+     // I might need to copy manual WASM if not handled by build.
+     // For safety, I'll rely on it working in dev first.
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}-Setup-${version}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}
